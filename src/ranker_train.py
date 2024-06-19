@@ -117,11 +117,11 @@ def main(args):
         print(f'Epoch {epoch + 1}, Learning Rate: {scheduler.get_last_lr()}')
 
         total_loss = 0
-        total_direct_referenced_composition_similarity = 0
+        total_direct_referenced_creativity_similarity = 0
         total_direct_referenced_presentation_similarity = 0
-        total_referenced_human_composition_similarity = 0
+        total_referenced_human_creativity_similarity = 0
         total_referenced_human_presentation_similarity = 0
-        total_direct_human_composition_similarity = 0
+        total_direct_human_creativity_similarity = 0
         total_direct_human_presentation_similarity = 0
 
         iteration = 0
@@ -129,12 +129,12 @@ def main(args):
         for instruction, direct_ans, referenced_ans, human_ans in tqdm(train_loader):
             iteration += 1
 
-            direct_score, direct_composition_style_embedding, direct_presentation_style_embedding = classifier(
+            direct_score, direct_creativity_style_embedding, direct_presentation_style_embedding = classifier(
                 instruction, direct_ans)
             if referenced:
-                referenced_score, referenced_composition_style_embedding, referenced_presentation_style_embedding = classifier(instruction, referenced_ans)
+                referenced_score, referenced_creativity_style_embedding, referenced_presentation_style_embedding = classifier(instruction, referenced_ans)
 
-            human_score, human_composition_style_embedding, human_presentation_style_embedding = classifier(instruction, human_ans)
+            human_score, human_creativity_style_embedding, human_presentation_style_embedding = classifier(instruction, human_ans)
             target = torch.ones(human_score.size()).to(device)
 
             if referenced:
@@ -148,8 +148,8 @@ def main(args):
                 if direct_referenced_indexes:
                     direct_referenced_ranking_criterion = nn.MarginRankingLoss(margin=0.5)
                     loss1 = direct_referenced_ranking_criterion(direct_score[direct_referenced_indexes], referenced_score[direct_referenced_indexes], target[direct_referenced_indexes])
-                    total_direct_referenced_composition_similarity += nn.CosineSimilarity(dim=1)(
-                        direct_composition_style_embedding[direct_referenced_indexes], referenced_composition_style_embedding[direct_referenced_indexes]).mean().item()
+                    total_direct_referenced_creativity_similarity += nn.CosineSimilarity(dim=1)(
+                        direct_creativity_style_embedding[direct_referenced_indexes], referenced_creativity_style_embedding[direct_referenced_indexes]).mean().item()
 
                     total_direct_referenced_presentation_similarity += nn.CosineSimilarity(dim=1)(
                         direct_presentation_style_embedding[direct_referenced_indexes], referenced_presentation_style_embedding[direct_referenced_indexes]).mean().item()
@@ -158,8 +158,8 @@ def main(args):
                 if referenced_human_indexes:
                     referenced_human_ranking_criterion = nn.MarginRankingLoss(margin=0.5)
                     loss2 = referenced_human_ranking_criterion(referenced_score[referenced_human_indexes], human_score[referenced_human_indexes], target[referenced_human_indexes])
-                    total_referenced_human_composition_similarity += nn.CosineSimilarity(dim=1)(
-                        referenced_composition_style_embedding[referenced_human_indexes], human_composition_style_embedding[referenced_human_indexes]).mean().item()
+                    total_referenced_human_creativity_similarity += nn.CosineSimilarity(dim=1)(
+                        referenced_creativity_style_embedding[referenced_human_indexes], human_creativity_style_embedding[referenced_human_indexes]).mean().item()
 
                     total_referenced_human_presentation_similarity += nn.CosineSimilarity(dim=1)(
                         referenced_presentation_style_embedding[referenced_human_indexes], human_presentation_style_embedding[referenced_human_indexes]).mean().item()
@@ -168,8 +168,8 @@ def main(args):
             if direct_human_indexes:
                 direct_human_ranking_criterion = nn.MarginRankingLoss(margin=0.5)
                 loss3 = direct_human_ranking_criterion(direct_score[direct_human_indexes], human_score[direct_human_indexes], target[direct_human_indexes])
-                total_direct_human_composition_similarity += nn.CosineSimilarity(dim=1)(
-                    direct_composition_style_embedding[direct_human_indexes], human_composition_style_embedding[direct_human_indexes]).mean().item()
+                total_direct_human_creativity_similarity += nn.CosineSimilarity(dim=1)(
+                    direct_creativity_style_embedding[direct_human_indexes], human_creativity_style_embedding[direct_human_indexes]).mean().item()
 
                 total_direct_human_presentation_similarity += nn.CosineSimilarity(dim=1)(
                     direct_presentation_style_embedding[direct_human_indexes], human_presentation_style_embedding[direct_human_indexes]).mean().item()
@@ -181,14 +181,14 @@ def main(args):
                 common_indexes = list(set(direct_human_indexes))
 
             if common_indexes and disentangle:
-                composition_style_loss = TripletMarginLoss(margin=1.0, p=2)(referenced_composition_style_embedding[common_indexes],
-                                                                            human_composition_style_embedding[common_indexes],
-                                                                            direct_composition_style_embedding[common_indexes])
+                creativity_style_loss = TripletMarginLoss(margin=1.0, p=2)(referenced_creativity_style_embedding[common_indexes],
+                                                                            human_creativity_style_embedding[common_indexes],
+                                                                            direct_creativity_style_embedding[common_indexes])
                 presentation_style_loss = TripletMarginLoss(margin=1.0, p=2)(direct_presentation_style_embedding[common_indexes],
                                                                             referenced_presentation_style_embedding[common_indexes],
                                                                             human_presentation_style_embedding[common_indexes])
                 loss_weight = 0.1
-                batch_loss += loss_weight * ((composition_style_loss + presentation_style_loss) / 2)
+                batch_loss += loss_weight * ((creativity_style_loss + presentation_style_loss) / 2)
 
             if batch_loss != 0:
                 optimizer.zero_grad()
@@ -199,28 +199,28 @@ def main(args):
 
             if iteration % args.display_interval == 0:
                 avg_loss = total_loss / args.display_interval
-                avg_direct_referenced_composition_similarity = total_direct_referenced_composition_similarity / args.display_interval
+                avg_direct_referenced_creativity_similarity = total_direct_referenced_creativity_similarity / args.display_interval
                 avg_direct_referenced_presentation_similarity = total_direct_referenced_presentation_similarity / args.display_interval
-                avg_referenced_human_composition_similarity = total_referenced_human_composition_similarity / args.display_interval
+                avg_referenced_human_creativity_similarity = total_referenced_human_creativity_similarity / args.display_interval
                 avg_referenced_human_presentation_similarity = total_referenced_human_presentation_similarity / args.display_interval
-                avg_direct_human_composition_similarity = total_direct_human_composition_similarity / args.display_interval
+                avg_direct_human_creativity_similarity = total_direct_human_creativity_similarity / args.display_interval
                 avg_direct_human_presentation_similarity = total_direct_human_presentation_similarity / args.display_interval
 
                 print(f'Epoch {epoch + 1}, Iteration {iteration}')
                 print(f'Average Loss: {avg_loss:.4f}')
-                print(f'Average Direct Referenced Composition Similarity: {avg_direct_referenced_composition_similarity:.4f}')
+                print(f'Average Direct Referenced Creativity Similarity: {avg_direct_referenced_creativity_similarity:.4f}')
                 print(f'Average Direct Referenced Presentation Similarity: {avg_direct_referenced_presentation_similarity:.4f}')
-                print(f'Average Referenced Human Composition Similarity: {avg_referenced_human_composition_similarity:.4f}')
+                print(f'Average Referenced Human Creativity Similarity: {avg_referenced_human_creativity_similarity:.4f}')
                 print(f'Average Referenced Human Presentation Similarity: {avg_referenced_human_presentation_similarity:.4f}')
-                print(f'Average Direct Human Composition Similarity: {avg_direct_human_composition_similarity:.4f}')
+                print(f'Average Direct Human Creativity Similarity: {avg_direct_human_creativity_similarity:.4f}')
                 print(f'Average Direct Human Presentation Similarity: {avg_direct_human_presentation_similarity:.4f}')
 
                 total_loss = 0
-                total_direct_referenced_composition_similarity = 0
+                total_direct_referenced_creativity_similarity = 0
                 total_direct_referenced_presentation_similarity = 0
-                total_referenced_human_composition_similarity = 0
+                total_referenced_human_creativity_similarity = 0
                 total_referenced_human_presentation_similarity = 0
-                total_direct_human_composition_similarity = 0
+                total_direct_human_creativity_similarity = 0
                 total_direct_human_presentation_similarity = 0
 
         classifier.eval()
@@ -264,20 +264,20 @@ def main(args):
         correct3 = 0
         correct4 = 0
         total = 0
-        total_direct_referenced_composition_similarity = 0
+        total_direct_referenced_creativity_similarity = 0
         total_direct_referenced_presentation_similarity = 0
-        total_referenced_human_composition_similarity = 0
+        total_referenced_human_creativity_similarity = 0
         total_referenced_human_presentation_similarity = 0
-        total_direct_human_composition_similarity = 0
+        total_direct_human_creativity_similarity = 0
         total_direct_human_presentation_similarity = 0
         display_interval = 0
         with torch.no_grad():
             for instruction, direct_ans, referenced_ans, human_ans in tqdm(data_loader):
                 display_interval += 1
-                direct_score, direct_composition_style_embedding, direct_presentation_style_embedding = classifier(
+                direct_score, direct_creativity_style_embedding, direct_presentation_style_embedding = classifier(
                     instruction, direct_ans)
-                referenced_score, referenced_composition_style_embedding, referenced_presentation_style_embedding = classifier(instruction, referenced_ans)
-                human_score, human_composition_style_embedding, human_presentation_style_embedding = classifier(instruction, human_ans)
+                referenced_score, referenced_creativity_style_embedding, referenced_presentation_style_embedding = classifier(instruction, referenced_ans)
+                human_score, human_creativity_style_embedding, human_presentation_style_embedding = classifier(instruction, human_ans)
                 correct1 += (direct_score > referenced_score).sum().item()
                 correct2 += (direct_score > human_score).sum().item()
                 correct3 += (referenced_score > human_score).sum().item()
@@ -286,37 +286,37 @@ def main(args):
                 combined_condition = torch.logical_and(condition1, condition2)
                 correct4 += combined_condition.sum().item()
                 total += direct_score.size(0)
-                total_direct_referenced_composition_similarity += nn.CosineSimilarity(dim=1)(
-                    direct_composition_style_embedding, referenced_composition_style_embedding).mean().item()
+                total_direct_referenced_creativity_similarity += nn.CosineSimilarity(dim=1)(
+                    direct_creativity_style_embedding, referenced_creativity_style_embedding).mean().item()
 
                 total_direct_referenced_presentation_similarity += nn.CosineSimilarity(dim=1)(
                     direct_presentation_style_embedding, referenced_presentation_style_embedding).mean().item()
 
-                total_referenced_human_composition_similarity += nn.CosineSimilarity(dim=1)(
-                    referenced_composition_style_embedding, human_composition_style_embedding).mean().item()
+                total_referenced_human_creativity_similarity += nn.CosineSimilarity(dim=1)(
+                    referenced_creativity_style_embedding, human_creativity_style_embedding).mean().item()
 
                 total_referenced_human_presentation_similarity += nn.CosineSimilarity(dim=1)(
                     referenced_presentation_style_embedding, human_presentation_style_embedding).mean().item()
 
-                total_direct_human_composition_similarity += nn.CosineSimilarity(dim=1)(
-                    direct_composition_style_embedding, human_composition_style_embedding).mean().item()
+                total_direct_human_creativity_similarity += nn.CosineSimilarity(dim=1)(
+                    direct_creativity_style_embedding, human_creativity_style_embedding).mean().item()
 
                 total_direct_human_presentation_similarity += nn.CosineSimilarity(dim=1)(
                     direct_presentation_style_embedding, human_presentation_style_embedding).mean().item()
 
         accuracy = (correct1 + correct2 + correct3) / (total * 3)
-        avg_direct_referenced_composition_similarity = total_direct_referenced_composition_similarity / display_interval
+        avg_direct_referenced_creativity_similarity = total_direct_referenced_creativity_similarity / display_interval
         avg_direct_referenced_presentation_similarity = total_direct_referenced_presentation_similarity / display_interval
-        avg_referenced_human_composition_similarity = total_referenced_human_composition_similarity / display_interval
+        avg_referenced_human_creativity_similarity = total_referenced_human_creativity_similarity / display_interval
         avg_referenced_human_presentation_similarity = total_referenced_human_presentation_similarity / display_interval
-        avg_direct_human_composition_similarity = total_direct_human_composition_similarity / display_interval
+        avg_direct_human_creativity_similarity = total_direct_human_creativity_similarity / display_interval
         avg_direct_human_presentation_similarity = total_direct_human_presentation_similarity / display_interval
 
-        print(f'Average Direct Referenced Composition Similarity: {avg_direct_referenced_composition_similarity:.4f}')
+        print(f'Average Direct Referenced Creativity Similarity: {avg_direct_referenced_creativity_similarity:.4f}')
         print(f'Average Direct Referenced Presentation Similarity: {avg_direct_referenced_presentation_similarity:.4f}')
-        print(f'Average Referenced Human Composition Similarity: {avg_referenced_human_composition_similarity:.4f}')
+        print(f'Average Referenced Human Creativity Similarity: {avg_referenced_human_creativity_similarity:.4f}')
         print(f'Average Referenced Human Presentation Similarity: {avg_referenced_human_presentation_similarity:.4f}')
-        print(f'Average Direct Human Composition Similarity: {avg_direct_human_composition_similarity:.4f}')
+        print(f'Average Direct Human Creativity Similarity: {avg_direct_human_creativity_similarity:.4f}')
         print(f'Average Direct Human Presentation Similarity: {avg_direct_human_presentation_similarity:.4f}')
         print(f"Test Accuracy: {accuracy:.4f}")
         print(f"direct_score > referenced_score accuracy: {correct1 / total:.4f}")

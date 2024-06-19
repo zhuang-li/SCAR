@@ -42,17 +42,17 @@ class ClassifierWithEncoder(nn.Module):
         answer_output_last_hidden_state = answer_output.last_hidden_state
 
         if 'codet5p' in self.encoder_name:
-            composition_style_embedding = self.relation_network(torch.cat(
+            creativity_style_embedding = self.relation_network(torch.cat(
                 (F.normalize(self.code_t5_encoder.proj(instruction_output_last_hidden_state[:, 0, :]), dim=-1),
                  F.normalize(self.code_t5_encoder.proj(answer_output_last_hidden_state[:, 0, :]), dim=-1)), dim=1
             ))
         else:
-            composition_style_embedding = self.relation_network(torch.cat(
+            creativity_style_embedding = self.relation_network(torch.cat(
                 (instruction_output.pooler_output, answer_output.pooler_output), dim=1
             ))
 
         answer_attention_mask = answer_input['attention_mask']
         presentation_style_embedding = max_pooling(answer_output.last_hidden_state, answer_attention_mask)
-        combined_output = torch.cat((composition_style_embedding, presentation_style_embedding), dim=1)
+        combined_output = torch.cat((creativity_style_embedding, presentation_style_embedding), dim=1)
         x = self.output_layer(combined_output)
-        return x, composition_style_embedding, presentation_style_embedding
+        return x, creativity_style_embedding, presentation_style_embedding
