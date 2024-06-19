@@ -8,11 +8,11 @@ The project is organized into several key directories:
 
 - `data`: Contains all datasets for training and evaluation.
   - `llm_sft_data`: Data for training the large language model (LLM).
-    - `code`: Code-related datasets.
-    - `open`: Open datasets.
+    - `code`: Code domain datasets.
+    - `open`: Open domain datasets.
   - `ranker_data`: Data for training the ranker.
-    - `code`: Code-related datasets for the ranker.
-    - `open`: Open datasets for the ranker.
+    - `code`: Code domain datasets for the ranker.
+    - `open`: Open domain datasets for the ranker.
 - `src`: Contains all source code files for the project.
 - `requirements.txt`: Lists all the dependencies required for the project.
 
