@@ -92,4 +92,18 @@ This directory contains data used for training the ranker. It is divided into su
                           --referenced_help_score_path ../data/ranker_data/code/gpt_35/quality_measure/referenced_help_score.json \
                           --direct_help_score_path ../data/ranker_data/code/gpt_35/quality_measure/direct_help_score.json \
                           --human_help_score_path ../data/ranker_data/code/gpt_35/quality_measure/human_help_score.json
+    ```
 
+4. **Filter the Data**
+   Execute the `data_filtering.py` script with appropriate arguments. Example:
+   ```sh
+    python data_filtering.py --input_file ../data/llm_sft_data/code/human/20000.json \
+                         --encoder_name Salesforce/codet5p-110m-embedding \
+                         --hidden_dim 768 \
+                         --linear_dim 256 \
+                         --output_dim 1 \
+                         --model_path dummy_ranker.pth \
+                         --device cuda \
+                         --ratios 50,25,12.5 \
+                         --output_filename ../data/llm_sft_data/code/human/id_selection/filtered_data_{ratio}.json
+    ```

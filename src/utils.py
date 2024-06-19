@@ -1,5 +1,8 @@
+import json
+
 import torch
-import torch.nn as nn
+from tqdm import tqdm
+
 
 def max_pooling(hidden_states, attention_mask):
     attention_mask = attention_mask.unsqueeze(-1).expand(hidden_states.size()).float()
@@ -44,3 +47,40 @@ def filter_ins_ans_pairs(instructions, answer_list1, answer_list2, ins_ans1_scor
             index_list.append(cnt)
         cnt += 1
     return index_list
+
+
+def evaluate_model(model, data_loader, device):
+    model.eval()
+    total = 0
+    data_with_scores = []
+    with torch.no_grad():
+        for instruction, answer, labels in tqdm(data_loader):
+            labels = labels.float().unsqueeze(1).to(device)
+            scores, _, _ = model(instruction, answer)
+            for idx, score in enumerate(scores):
+                data_with_scores.append({
+                    "score": score.item(),
+                    "data": {"instruction": instruction[idx], "answer": answer[idx]}
+                })
+            total += labels.size(0)
+
+    sorted_data = sorted(data_with_scores, key=lambda x: x["score"], reverse=True)
+    return sorted_data
+
+def filter_data(sorted_data, ratio, output_filename):
+    top_k_percent_index = int(len(sorted_data) * (ratio/100)) if ratio <= 100 else ratio
+    top_data = sorted_data[:top_k_percent_index]
+
+    filtered_data_dict = []
+    for cnt, item in enumerate(top_data):
+        filtered_data_dict.append({
+            "id": "identity_" + str(cnt),
+            "conversations": [
+                {"from": "human", "value": item["data"]["instruction"]},
+                {"from": "gpt", "value": item["data"]["answer"]}
+            ]
+        })
+
+    with open(output_filename, 'w') as f:
+        json.dump(filtered_data_dict, f)
+

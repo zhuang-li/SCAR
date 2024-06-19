@@ -16,3 +16,20 @@ class ContrastiveDataset(Dataset):
         answer2 = self.answers2[idx]
         answer3 = self.answers3[idx]
         return instruction, answer1, answer2, answer3
+
+
+
+class TextDataset(Dataset):
+    def __init__(self, instructions, answers, labels):
+        self.instructions = instructions
+        self.answers = answers
+        self.labels = labels
+
+    def __len__(self):
+        return len(self.instructions)
+
+    def __getitem__(self, idx):
+        instruction = self.instructions[idx]
+        answer = self.answers[idx]
+        label = self.labels[idx]
+        return instruction, answer, label
