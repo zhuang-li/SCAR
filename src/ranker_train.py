@@ -4,7 +4,7 @@ import torch
 from torch import nn
 from torch.nn import TripletMarginLoss
 from torch.utils.data import DataLoader
-from transformers import AutoTokenizer, get_linear_schedule_with_warmup
+from transformers import get_linear_schedule_with_warmup
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
