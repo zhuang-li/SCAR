@@ -7,17 +7,16 @@ leverages style consistency-aware response ranking to improve the quality and ef
 
 ## Installation
 
-You can install SCAR using pip:
+Ensure you have a **Python 3.8+** environment. You can install SCAR using pip:
 
 ```bash
-pip install scar
+pip install scar-tool
 ```
 
 ## Requirements
 
-SCAR requires the following
-dependencies: `torch`, `transformers`, `scikit-learn`, `tqdm`, `nltk`, `datasketch`, `peft`, `trl`, `accelerate`, `langdetect`,
-and `deepspeed`. These will be automatically installed when you install SCAR via pip.
+SCAR requires the following dependencies: `torch>=2.3`, `transformers>=4.37`, `huggingface_hub>=0.23`, `scikit-learn`, `tqdm`, `nltk` and `datasketch`. These will be automatically installed when you install SCAR via pip.
+
 
 ## Usage
 
@@ -155,8 +154,13 @@ The `scripts/` directory contains bash scripts for various tasks:
 - `quality_measure.sh`: Measures the quality of the collected responses using LLMs, utilized to train the ranker.
 - `train_ranker.sh`: Trains the SCAR style ranker model. Please update the script arguments as needed.
 - `data_filter.sh`: Ranks and filters instruction-answer pairs. Please update the script arguments as needed.
-- `train_llm.sh`: Fine-tunes a large language model using the filtered data. Please review and update the script
-  arguments accordingly.
+- `train_llm.sh`: This script fine-tunes a large language model using the filtered data. Review and update the script arguments accordingly to ensure proper training. The following additional packages are required to train the LLM:
+  - `peft`
+  - `trl`
+  - `accelerate`
+  - `deepspeed`
+
+Ensure all dependencies are installed before running these scripts to achieve the best results.
 
 ## Project Structure
 

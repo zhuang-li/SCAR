@@ -1,5 +1,6 @@
-torch
-transformers
+torch>=2.3
+transformers>=4.37
+huggingface_hub>=0.23
 scikit-learn
 tqdm
 nltk
@@ -8,4 +9,3 @@ peft
 trl
 accelerate
 deepspeed
-py-cpuinfo

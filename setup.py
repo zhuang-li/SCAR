@@ -2,20 +2,16 @@ from setuptools import setup, find_packages
 
 setup(
     name="scar-tool",
-    version="0.2",
+    version="0.34",
     packages=find_packages(),
     install_requires=[
-        'torch',
-        'transformers',
+        'torch>=2.3',
+        'transformers>=4.37',
+        'huggingface_hub>=0.23',
         'scikit-learn',
         'tqdm',
         'nltk',
-        'datasketch',
-        'peft',
-        'trl',
-        'accelerate',
-        'py-cpuinfo'
-        'deepspeed'
+        'datasketch'
     ],
     author="Zhuang Li",
     author_email="zhuang.li1@monash.edu",
