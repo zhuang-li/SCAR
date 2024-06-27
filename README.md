@@ -2,8 +2,7 @@
 
 ## Overview
 
-SCAR is an innovative data selection method designed to enhance instruction-tuning for large language models. It
-leverages style consistency-aware response ranking to improve the quality and efficiency of the training data.
+SCAR is an innovative data selection method that enhances instruction-tuning for large language models. By leveraging style consistency-aware response ranking, SCAR identifies and selects the most beneficial training data for fine-tuning LLMs, ultimately improving their performance.
 
 ## Installation
 
