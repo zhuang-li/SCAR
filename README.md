@@ -1,109 +1,177 @@
-# SCAR: Efficient Instruction-Tuning for Large Language Models via Style Consistency-Aware Response Ranking
+# SCAR: Style Consistency-Aware Response Ranking for LLM Instruction-Tuning
 
 ## Overview
-SCAR is a data selection method designed to enhance instruction-tuning for large language models by leveraging style consistency-aware response ranking.
 
-## Project Structure
-The project is organized into several key directories:
-
-- `data`: Contains all datasets for training and evaluation.
-  - `llm_sft_data`: Data for training the large language model (LLM).
-    - `code`: Code domain datasets.
-    - `open`: Open domain datasets.
-  - `ranker_data`: Data for training the ranker.
-    - `code`: Code domain datasets for the ranker.
-    - `open`: Open domain datasets for the ranker.
-- `src`: Contains all source code files for the project.
-- `requirements.txt`: Lists all the dependencies required for the project.
+SCAR is an innovative data selection method designed to enhance instruction-tuning for large language models. It
+leverages style consistency-aware response ranking to improve the quality and efficiency of the training data.
 
 ## Installation
 
-### Prerequisites
-Before you begin, ensure you have the following dependencies installed:
+You can install SCAR using pip:
 
-- PyTorch
-- Transformers
-- tqdm
-- scikit-learn
-
-You can install these dependencies using conda:
-
-```sh
-conda install pytorch torchvision torchaudio -c pytorch
-conda install transformers
-conda install tqdm
-conda install scikit-learn
+```bash
+pip install scar
 ```
 
-## Data
+## Requirements
 
-### SFT Data (`llm_sft_data`)
-This directory contains data used for training the large language model. It is divided into subdirectories based on the data source (e.g., `code`, `open`). Each subdirectory contains various JSON files organized by different selection criteria.
+SCAR requires the following
+dependencies: `torch`, `transformers`, `scikit-learn`, `tqdm`, `nltk`, `datasketch`, `peft`, `trl`, `accelerate`, `langdetect`,
+and `deepspeed`. These will be automatically installed when you install SCAR via pip.
 
-### Ranker Data (`ranker_data`)
-This directory contains data used for training the ranker. It is divided into subdirectories based on the data source (e.g., `code`, `open`). Each subdirectory contains:
-- `instruction_response`: JSON files with instruction-response pairs.
-  - `direct.json`: Direct responses to the instructions.
-  - `human.json`: Human-generated responses.
-  - `referenced.json`: Referenced responses to the instructions.
-- `quality_measure`: JSON files with quality scores for the responses.
-  - `direct_correct_score.json`: Quality scores for the correctness of direct responses.
-  - `direct_help_score.json`: Quality scores for the helpfulness of direct responses.
-  - `human_correct_score.json`: Quality scores for the correctness of human responses.
-  - `human_help_score.json`: Quality scores for the helpfulness of human responses.
-  - `referenced_correct_score.json`: Quality scores for the correctness of referenced responses.
-  - `referenced_help_score.json`: Quality scores for the helpfulness of referenced responses.
+## Usage
 
-## Running the Project
+### Basic Usage with Hugging Face Transformers
 
-1. **Clone the repository**
-   ```sh
-   git clone https://github.com/yourusername/SCAR.git
-   cd SCAR/src
-    ```
+Here's a simple example of how to use the StyleRanker model with Hugging Face Transformers:
 
-2. **Prepare the data**
-   Ensure your data files are placed in the respective directories (`data/llm_sft_data/` and `data/ranker_data/`).
+```python
+import torch
+from transformers import AutoTokenizer
+from style_ranker.ranker.model import StyleRanker
 
-3. **Train and Evaluate the Ranker**
-   Execute the `ranker_train.py` script with appropriate arguments. Example:
-   ```sh
-   python ranker_train.py --encoder_name Salesforce/codet5p-110m-embedding \
-                          --hidden_dim 768 \
-                          --linear_dim 256 \
-                          --output_dim 1 \
-                          --score_type help_correct \
-                          --disentangle \
-                          --referenced \
-                          --constraint_mode abs \
-                          --train_batch_size 4 \
-                          --val_batch_size 16 \
-                          --test_batch_size 32 \
-                          --learning_rate 5e-5 \
-                          --num_epochs 10 \
-                          --display_interval 100 \
-                          --model_path best_model.pth \
-                          --referenced_file_path ../data/ranker_data/code/gpt_35/instruction_response/referenced.json \
-                          --direct_file_path ../data/ranker_data/code/gpt_35/instruction_response/direct.json \
-                          --human_file_path ../data/ranker_data/code/gpt_35/instruction_response/human.json \
-                          --referenced_correct_score_path ../data/ranker_data/code/gpt_35/quality_measure/referenced_correct_score.json \
-                          --direct_correct_score_path ../data/ranker_data/code/gpt_35/quality_measure/direct_correct_score.json \
-                          --human_correct_score_path ../data/ranker_data/code/gpt_35/quality_measure/human_correct_score.json \
-                          --referenced_help_score_path ../data/ranker_data/code/gpt_35/quality_measure/referenced_help_score.json \
-                          --direct_help_score_path ../data/ranker_data/code/gpt_35/quality_measure/direct_help_score.json \
-                          --human_help_score_path ../data/ranker_data/code/gpt_35/quality_measure/human_help_score.json
-    ```
+# Load the model and tokenizer
+model_path = "lizhuang144/scar-gte-base"
+model = StyleRanker.from_pretrained(model_path)
+tokenizer = AutoTokenizer.from_pretrained(model_path)
 
-4. **Filter the Data**
-   Execute the `data_filtering.py` script with appropriate arguments. Example:
-   ```sh
-    python data_filtering.py --input_file ../data/llm_sft_data/code/human/20000.json \
-                         --encoder_name Salesforce/codet5p-110m-embedding \
-                         --hidden_dim 768 \
-                         --linear_dim 256 \
-                         --output_dim 1 \
-                         --model_path dummy_ranker.pth \
-                         --device cuda \
-                         --ratios 50,25,12.5 \
-                         --output_filename ../data/llm_sft_data/code/human/id_selection/filtered_data_{ratio}.json
-    ```
+# Prepare your data
+instructions = ["Write a poem about spring", "Explain quantum computing"]
+answers = ["Blossoms bloom in gentle breeze...", "Quantum computing is a type of computation..."]
+
+# Tokenize the inputs
+max_length = 512
+instruction_inputs = tokenizer(instructions, return_tensors='pt', padding=True, truncation=True, max_length=max_length)
+answer_inputs = tokenizer(answers, return_tensors='pt', padding=True, truncation=True, max_length=max_length)
+model.eval()
+# Get the scores
+with torch.no_grad():
+    scores = model(
+        instruction_inputs.input_ids,
+        instruction_inputs.attention_mask,
+        answer_inputs.input_ids,
+        answer_inputs.attention_mask
+    )
+
+# Print the results
+for instruction, answer, score in zip(instructions, answers, scores):
+    print(f"Instruction: {instruction}")
+    print(f"Answer: {answer}")
+    print(f"Score: {score.item()}")
+    print()
+```
+
+### Advanced Usage
+
+SCAR offers sophisticated capabilities for data filtering and ranking through its comprehensive pipeline. This allows
+you to fine-tune your selection process by choosing the top-k pairs with the highest scores, setting a ratio for
+selection, or applying a threshold for filtering.
+
+The `rank_and_filter` function provides a powerful way to rank and filter instruction-answer pairs. Here's an example
+demonstrating its usage:
+
+```python
+from style_ranker.rank import rank_and_filter
+
+# Load the model and tokenizer
+model_path = "lizhuang144/scar-gte-base"
+
+# Prepare your data
+instructions = ["Write a poem about spring", "Explain quantum computing", "Describe the water cycle"]
+answers = ["Blossoms bloom in gentle breeze...", "Quantum computing is a type of computation...",
+           "The water cycle, also known as..."]
+
+# Example 1: Using topk
+topk_pairs = rank_and_filter(model_path, instructions, answers, topk=2)
+
+# Example 2: Using threshold
+threshold_pairs = rank_and_filter(model_path, instructions, answers, threshold=-0.5)
+
+# Example 3: Using ratio
+ratio_pairs = rank_and_filter(model_path, instructions, answers, ratio=0.5)
+
+# Print results for each method
+print("Top-k results:")
+for instruction, answer, score in topk_pairs:
+    print(f"Score: {score:.2f} | Instruction: {instruction}")
+
+print("\nThreshold results:")
+for instruction, answer, score in threshold_pairs:
+    print(f"Score: {score:.2f} | Instruction: {instruction}")
+
+print("\nRatio results:")
+for instruction, answer, score in ratio_pairs:
+    print(f"Score: {score:.2f} | Instruction: {instruction}")
+```
+
+## Performance
+
+SCAR demonstrates significant improvements in LLM performance when used for data filtering and selection. We evaluated
+our method using two LLMs: Olmo and Starcoder.
+
+**Note:** Prior to applying SCAR, we filter out non-English and remove duplicate instruction-response pairs.
+
+### Olmo Performance
+
+| Dataset Size        | L.C. WinRate |
+|---------------------|--------------|
+| Full dataset (320k) | 3.86         |
+| SCAR-filtered 10k   | 5.37         |
+| SCAR-filtered 5k    | 5.64         |
+| SCAR-filtered 2.5k  | 4.08         |
+
+The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLMo-7B-SFT) is trained on 320k data from [allenai/tulu-v2-sft-mixture](https://huggingface.co/datasets/allenai/tulu-v2-sft-mixture). We evaluate the performance of models trained with SCAR-filtered data using 10k, 5k, and 2.5k instruction-answer pairs. The evaluation metric is L.C. WinRate, which compares model outputs with 'gpt-4-1106-preview' using [meta-llama/Meta-Llama-3-70B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-70B-Instruct) as the judger on the [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) benchmark.
+
+
+### Starcoder Performance
+
+| Dataset Size       | HumanEval (Python)                                 | MultiPL-E (Java)                                 | MultiPL-E (C++)                                  | MultiPL-E (JavaScript)                                 |
+|--------------------|----------------------------------------------------|--------------------------------------------------|--------------------------------------------------|--------------------------------------------------------|
+|                    | Pass@1 / Pass@10                                   | Pass@1 / Pass@10                                 | Pass@1 / Pass@10                                 | Pass@1 / Pass@10                                       |
+| Full dataset (13k) | 35.56/ 51.81 | 26.03    / 38.44             | 32.80   / 46.97      | 29.32                  / 41.90        |
+| SCAR-filtered 10k  | 36.29 / 53.99    | 28.29      / 39.58       | 33.22     / 49.79   | 30.17       / 46.20                 |
+| SCAR-filtered 5k   | 36.95    / 54.07    | 28.96     / 39.02    | 34.53  / 49.90 | 34.53      / 49.90         |
+| SCAR-filtered 2.5k | 37.57 / 55.65 | 29.29   / 41.06 | 34.09  / 49.47 | 31.19   / 42.83 |
+
+The official checkpoint ['bigcode/octocoder'](https://huggingface.co/bigcode/octocoder) is the ['bigcode/starcoder'](https://huggingface.co/bigcode/starcoder) fine-tuned on 13k data from ['bigcode/guanaco-commits'](https://huggingface.co/datasets/bigcode/guanaco-commits). We evaluated the performance using the [bigcode-evaluation-harness](https://github.com/bigcode-project/bigcode-evaluation-harness). The performance of 'bigcode/octocoder' is obtained from the ['bigcode/bigcode-models-leaderboard'](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/tree/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder). We evaluated models on four datasets in four programming languages (Python, Java, C++, and JavaScript) and reported two execution accuracies (Pass@1 and Pass@10) for each dataset. We evaluated the performance of the model trained with SCAR-filtered data with 10k, 5k, and 2.5k instruction-answer pairs.
+
+
+## Key Components
+
+- **StyleRanker**: A model for ranking instruction-answer pairs based on style consistency and data quality.
+- **Data Filtering**: Scripts for filtering and selecting high-quality instruction-answer pairs.
+- **LLM Training**: Scripts for fine-tuning large language models using the selected data.
+
+## Scripts
+
+The `scripts/` directory contains bash scripts for various tasks:
+
+- `quality_measure.sh`: Measures the quality of the collected responses using LLMs, utilized to train the ranker.
+- `train_ranker.sh`: Trains the SCAR style ranker model. Please update the script arguments as needed.
+- `data_filter.sh`: Ranks and filters instruction-answer pairs. Please update the script arguments as needed.
+- `train_llm.sh`: Fine-tunes a large language model using the filtered data. Please review and update the script
+  arguments accordingly.
+
+## Project Structure
+
+The project is organized as follows:
+
+- `data/`: Datasets for training and evaluation
+    - `llm_sft_data/`: Training data for the large language model (code and open domain)
+    - `ranker_data/`: Training data for the ranker (code and open domain)
+- `style_ranker/`: Main package
+    - `consts.py`
+    - `dedup.py`: Near deduplication
+    - `llm/`: LLM training (`train.py`)
+    - `rank.py`: Ranking and filtering
+    - `ranker/`: StyleRanker implementation
+        - `config.py`, `dataset.py`, `model.py`, `quality.py`: Quality measure with LLMs like GPT-3.5-turbo
+        - SCAR ranker training (`train.py`)
+    - `utils.py`
+- `examples/`: Example Python scripts
+    - `filter_pipeline.py`, `rank_pairs.py`, `remove_dupes.py`, `vicuna_converter.py`
+- `scripts/`: Example Bash scripts
+    - `data_filter.sh`, `quality_measure.sh`, `train_llm.sh`, `train_ranker.sh`
+- `requirements.txt`: List of dependencies
+- `setup.py`: Installation script
+
