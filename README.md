@@ -71,7 +71,7 @@ demonstrating its usage:
 
 ```python
 from style_ranker.rank import rank_and_filter
-
+import torch
 # Load the model and tokenizer
 model_path = "lizhuang144/scar-gte-base"
 
@@ -80,14 +80,16 @@ instructions = ["Write a poem about spring", "Explain quantum computing", "Descr
 answers = ["Blossoms bloom in gentle breeze...", "Quantum computing is a type of computation...",
            "The water cycle, also known as..."]
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 # Example 1: Using topk
-topk_pairs = rank_and_filter(model_path, instructions, answers, topk=2)
+topk_pairs = rank_and_filter(model_path, instructions, answers, topk=2, device=device)
 
 # Example 2: Using threshold
-threshold_pairs = rank_and_filter(model_path, instructions, answers, threshold=-0.5)
+threshold_pairs = rank_and_filter(model_path, instructions, answers, threshold=-0.5, device=device)
 
 # Example 3: Using ratio
-ratio_pairs = rank_and_filter(model_path, instructions, answers, ratio=0.5)
+ratio_pairs = rank_and_filter(model_path, instructions, answers, ratio=0.5, device=device)
 
 # Print results for each method
 print("Top-k results:")
