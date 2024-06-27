@@ -8,3 +8,4 @@ peft
 trl
 accelerate
 deepspeed
+py-cpuinfo

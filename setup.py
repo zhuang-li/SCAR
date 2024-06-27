@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="SCAR",
-    version="0.1",
+    name="scar-tool",
+    version="0.2",
     packages=find_packages(),
     install_requires=[
         'torch',
@@ -14,6 +14,7 @@ setup(
         'peft',
         'trl',
         'accelerate',
+        'py-cpuinfo'
         'deepspeed'
     ],
     author="Zhuang Li",
