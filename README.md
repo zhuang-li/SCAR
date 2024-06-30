@@ -1,4 +1,4 @@
-# SCAR: Style Consistency-Aware Response Ranking for LLM Instruction-Tuning
+# SCAR: Efficient Instruction-Tuning for Large Language Models via Style Consistency-Aware Response Ranking
 
 ## Overview
 
@@ -183,4 +183,14 @@ The project is organized as follows:
     - `data_synthesize.sh`, `data_filter.sh`, `quality_measure.sh`, `train_llm.sh`, `train_ranker.sh`
 - `requirements.txt`: List of dependencies
 - `setup.py`: Installation script
+
+## Citation
+```angular2html
+@article{li2024scar,
+  title={SCAR: Efficient Instruction-Tuning for Large Language Models via Style Consistency-Aware Response Ranking},
+  author={Li, Zhuang and Hua, Yuncheng and Vu, Thuy-Trang and Zhan, Haolan and Qu, Lizhen and Haffari, Gholamreza},
+  journal={arXiv preprint arXiv:2406.10882},
+  year={2024}
+}
+```
 
