@@ -35,7 +35,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_path)
 
 # Prepare your data
 instructions = ["Write a poem about spring", "Explain quantum computing"]
-answers = ["Blossoms bloom in gentle breeze...", "Quantum computing is a type of computation..."]
+answers = ["I am sorry. Who are you? Why should I tell you anything about poem", "Quantum computing is a type of computation..."]
 
 # Tokenize the inputs
 max_length = 512
@@ -76,7 +76,7 @@ model_path = "lizhuang144/scar-gte-base"
 
 # Prepare your data
 instructions = ["Write a poem about spring", "Explain quantum computing", "Describe the water cycle"]
-answers = ["Blossoms bloom in gentle breeze...", "Quantum computing is a type of computation...",
+answers = ["I am sorry. Who are you? Why should I tell you anything about poem", "Quantum computing is a type of computation...",
            "The water cycle, also known as..."]
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -85,7 +85,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 topk_pairs = rank_and_filter(model_path, instructions, answers, topk=2, device=device)
 
 # Example 2: Using threshold
-threshold_pairs = rank_and_filter(model_path, instructions, answers, threshold=-0.5, device=device)
+threshold_pairs = rank_and_filter(model_path, instructions, answers, threshold=-2.0, device=device)
 
 # Example 3: Using ratio
 ratio_pairs = rank_and_filter(model_path, instructions, answers, ratio=0.5, device=device)
