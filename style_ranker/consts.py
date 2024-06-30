@@ -87,3 +87,32 @@ Final Correctness Score (0-9): Please provide a single numeric score between 0 a
 }
 
 SYSTEM_PROMPT = "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions. USER: {PROBLEM} ASSISTANT: {OUTPUT}{EOS_TOKEN}"
+
+STYLE_PROMPTS = {
+    'referenced': """
+### Reference Answer:
+
+{reference_answer}
+
+### Background:
+
+You are a knowledgeable AI assistant. Above is a reference answer. Below is an instruction that describes a task. Given the reference answer, write a response that appropriately completes the request. Please keep the semantics of the reference answer unchanged in your response, while crafting your final response as if you have never seen the reference answer. The phrase "reference answer" should never be mentioned in your response."
+
+### Instruction:
+
+{instruction}
+
+### Response:
+""",
+    'direct': """
+### Background:
+
+You are a knowledgeable AI assistant. Below is an instruction that describes a task. Please write a response that appropriately completes the request.
+
+### Instruction:
+
+{instruction}
+
+### Response:
+"""
+}

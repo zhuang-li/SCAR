@@ -131,13 +131,13 @@ The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLM
 
 ### Starcoder Performance
 
-| Dataset Size       | HumanEval (Python)                                 | MultiPL-E (Java)                                 | MultiPL-E (C++)                                  | MultiPL-E (JavaScript)                                 |
-|--------------------|----------------------------------------------------|--------------------------------------------------|--------------------------------------------------|--------------------------------------------------------|
-|                    | Pass@1 / Pass@10                                   | Pass@1 / Pass@10                                 | Pass@1 / Pass@10                                 | Pass@1 / Pass@10                                       |
-| Full dataset (13k) | 35.56/ 51.81 | 26.03    / 38.44             | 32.80   / 46.97      | 29.32                  / 41.90        |
-| SCAR-filtered 10k  | 36.29 / 53.99    | 28.29      / 39.58       | 33.22     / 49.79   | 30.17       / 46.20                 |
-| SCAR-filtered 5k   | 36.95    / 54.07    | 28.96     / 39.02    | 34.53  / 49.90 | 34.53      / 49.90         |
-| SCAR-filtered 2.5k | 37.57 / 55.65 | 29.29   / 41.06 | 34.09  / 49.47 | 31.19   / 42.83 |
+| Dataset Size       | HumanEval (Python)                                 | MultiPL-E (Java)                                 | MultiPL-E (JavaScript)                                  | MultiPL-E (C++)                |
+|--------------------|----------------------------------------------------|--------------------------------------------------|--------------------------------------------------|--------------------------------|
+|                    | Pass@1 / Pass@10                                   | Pass@1 / Pass@10                                 | Pass@1 / Pass@10                                 | Pass@1 / Pass@10               |
+| Full dataset (13k) | 35.56/ 51.81 | 26.03    / 38.44             | 32.80   / 46.97      | 29.32                  / 41.90 |
+| SCAR-filtered 10k  | 36.29 / 53.99    | 28.29      / 39.58       | 33.22     / 49.79   | 30.17       / 46.20            |
+| SCAR-filtered 5k   | 36.95    / 54.07    | 28.96     / 39.02    | 34.53  / 49.90 | 34.53      / 49.90             |
+| SCAR-filtered 2.5k | 37.57 / 55.65 | 29.29   / 41.06 | 34.09  / 49.47 | 31.19   / 42.83                |
 
 The official checkpoint ['bigcode/octocoder'](https://huggingface.co/bigcode/octocoder) is the ['bigcode/starcoder'](https://huggingface.co/bigcode/starcoder) fine-tuned on 13k data from ['bigcode/guanaco-commits'](https://huggingface.co/datasets/bigcode/guanaco-commits). We evaluated the performance using the [bigcode-evaluation-harness](https://github.com/bigcode-project/bigcode-evaluation-harness). The performance of 'bigcode/octocoder' is obtained from the ['bigcode/bigcode-models-leaderboard'](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/tree/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder). We evaluated models on four datasets in four programming languages (Python, Java, C++, and JavaScript) and reported two execution accuracies (Pass@1 and Pass@10) for each dataset. We evaluated the performance of the model trained with SCAR-filtered data with 10k, 5k, and 2.5k instruction-answer pairs.
 
@@ -152,6 +152,7 @@ The official checkpoint ['bigcode/octocoder'](https://huggingface.co/bigcode/oct
 
 The `scripts/` directory contains bash scripts for various tasks:
 
+- `data_synthesize.sh`: Synthesizes 'referenced' and 'direct' responses based on the human responses for training the ranker. Please adjust the script arguments as needed.
 - `quality_measure.sh`: Measures the quality of the collected responses using LLMs, utilized to train the ranker.
 - `train_ranker.sh`: Trains the SCAR style ranker model. Please update the script arguments as needed.
 - `data_filter.sh`: Ranks and filters instruction-answer pairs. Please update the script arguments as needed.

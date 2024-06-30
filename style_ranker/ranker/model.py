@@ -81,8 +81,8 @@ class StyleRanker(PreTrainedModel):
 
         model = cls(config)
 
-        print(config.encoder_name)
-        print(config.encoder_name)
+        # print(config.encoder_name)
+        # print(config.encoder_name)
 
         # Check if the path is a directory (local) or a model name (Hugging Face Hub)
         if os.path.isdir(pretrained_model_name_or_path):

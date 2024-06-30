@@ -12,6 +12,9 @@ python style_ranker/ranker/train.py \
   --human_help_score_path data/ranker_data/mix_code_open/gpt_35/quality_measure/human_help_score.json \
   --hidden_dim 768 \
   --linear_dim 512 \
+  --constraint_min 5.0 \
+  --constraint_max 10.0 \
   --encoder_name Alibaba-NLP/gte-base-en-v1.5 \
-  --model_path gte_base_ranker_test \
-  --num_epochs 20
+  --model_path gte_base_ranker \
+  --num_epochs 20 \
+  --train_batch_size 2
