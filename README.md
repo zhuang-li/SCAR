@@ -178,7 +178,7 @@ The project is organized as follows:
         - SCAR ranker training (`train.py`)
     - `utils.py`
 - `examples/`: Example Python scripts
-    - `filter_pipeline.py`, `rank_pairs.py`, `remove_dupes.py`, `vicuna_converter.py`
+    - `data_synthesize.sh`, `filter_pipeline.py`, `rank_pairs.py`, `remove_dupes.py`, `vicuna_converter.py`
 - `scripts/`: Example Bash scripts
     - `data_filter.sh`, `quality_measure.sh`, `train_llm.sh`, `train_ranker.sh`
 - `requirements.txt`: List of dependencies
