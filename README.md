@@ -1,5 +1,11 @@
 # SCAR: Efficient Instruction-Tuning for Large Language Models via Style Consistency-Aware Response Ranking
 
+<p align="center">
+    <a href="https://arxiv.org/abs/2406.10882"><img src="https://img.shields.io/badge/arXiv-2406.10882-b31b1b.svg"></a>
+    <a href="https://pypi.org/project/scar-tool/"><img src="https://img.shields.io/pypi/v/scar-tool?color=g"></a>
+    <a href="https://pepy.tech/project/scar-tool"><img src="https://static.pepy.tech/badge/scar-tool"></a>
+</p>
+
 ## Overview
 
 SCAR is an innovative data selection method that enhances instruction-tuning for large language models. By leveraging style consistency-aware response ranking, SCAR identifies and selects the most beneficial training data for fine-tuning LLMs, ultimately improving their performance.
