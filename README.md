@@ -8,6 +8,7 @@ SCAR is an innovative data selection method that enhances instruction-tuning for
     <a href="https://arxiv.org/abs/2406.10882"><img src="https://img.shields.io/badge/arXiv-2406.10882-b31b1b.svg"></a>
     <a href="https://pypi.org/project/scar-tool/"><img src="https://img.shields.io/pypi/v/scar-tool?color=g"></a>
     <a href="https://pepy.tech/project/scar-tool"><img src="https://static.pepy.tech/badge/scar-tool"></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg"></a>
 </p>
 
 ## Installation
