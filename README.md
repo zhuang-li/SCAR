@@ -117,6 +117,9 @@ We provide the following pre-trained SCAR models:
 - [`lizhuang144/scar-gte-base`](https://huggingface.co/lizhuang144/scar-gte-base): SCAR model trained using [`Alibaba-NLP/gte-base-en-v1.5`](https://huggingface.co/Alibaba-NLP/gte-base-en-v1.5) as the representation encoder.
 - [`lizhuang144/scar-gte-large`](https://huggingface.co/lizhuang144/scar-gte-large): SCAR model trained using [`Alibaba-NLP/gte-large-en-v1.5`](https://huggingface.co/Alibaba-NLP/gte-large-en-v1.5) as the representation encoder.
 - [`lizhuang144/scar-roberta-base`](https://huggingface.co/lizhuang144/scar-roberta-base): SCAR model trained using [`FacebookAI/roberta-base`](https://huggingface.co/FacebookAI/roberta-base) as the representation encoder.
+
+The models are pre-trained on a dataset consisting primarily of open-domain data, available at `https://github.com/zhuang-li/SCAR/tree/main/data/ranker_data/mix_code_open/gpt_35`. Due to the limited presence of code-specific data in this training set, we are uncertain about the models' effectiveness in filtering code data.
+
 ## Performance
 
 SCAR demonstrates significant improvements in LLM performance when used for data filtering and selection. We evaluated
