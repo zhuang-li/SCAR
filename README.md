@@ -4,19 +4,12 @@
 
 SCAR is an innovative data selection method that enhances instruction-tuning for large language models. By leveraging style consistency-aware response ranking, SCAR identifies and selects the most beneficial training data for fine-tuning LLMs, ultimately improving their performance.
 
-<p align="center">
-    <a href="https://arxiv.org/abs/2406.10882"><img src="https://img.shields.io/badge/arXiv-2406.10882-b31b1b.svg"></a>
-    <a href="https://pypi.org/project/scar-tool/"><img src="https://img.shields.io/pypi/v/scar-tool?color=g"></a>
-    <a href="https://pepy.tech/project/scar-tool"><img src="https://static.pepy.tech/badge/scar-tool"></a>
-    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg"></a>
-</p>
-
 ## Installation
 
 Ensure you have a **Python 3.8+** environment. You can install SCAR using pip:
 
 ```bash
-pip install scar-tool
+pip install -e .
 ```
 
 ## Requirements
@@ -36,7 +29,7 @@ from transformers import AutoTokenizer
 from style_ranker.ranker.model import StyleRanker
 
 # Load the model and tokenizer
-model_path = "lizhuang144/scar-gte-base"
+model_path = "anon/scar-gte-base"
 model = StyleRanker.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 
@@ -79,7 +72,7 @@ demonstrating its usage:
 from style_ranker.rank import rank_and_filter
 import torch
 # Load the model and tokenizer
-model_path = "lizhuang144/scar-gte-base"
+model_path = "anon/scar-gte-base"
 
 # Prepare your data
 instructions = ["Write a poem about spring", "Explain quantum computing", "Describe the water cycle"]
@@ -112,11 +105,8 @@ for instruction, answer, score in ratio_pairs:
 ```
 ## Model List
 
-We provide the following pre-trained SCAR models:
+We will make the pre-trained SCAR models available after the ICLR anonymity period concludes.
 
-- [`lizhuang144/scar-gte-base`](https://huggingface.co/lizhuang144/scar-gte-base): SCAR model trained using [`Alibaba-NLP/gte-base-en-v1.5`](https://huggingface.co/Alibaba-NLP/gte-base-en-v1.5) as the representation encoder.
-- [`lizhuang144/scar-gte-large`](https://huggingface.co/lizhuang144/scar-gte-large): SCAR model trained using [`Alibaba-NLP/gte-large-en-v1.5`](https://huggingface.co/Alibaba-NLP/gte-large-en-v1.5) as the representation encoder.
-- [`lizhuang144/scar-roberta-base`](https://huggingface.co/lizhuang144/scar-roberta-base): SCAR model trained using [`FacebookAI/roberta-base`](https://huggingface.co/FacebookAI/roberta-base) as the representation encoder.
 ## Performance
 
 SCAR demonstrates significant improvements in LLM performance when used for data filtering and selection. We evaluated
@@ -191,13 +181,4 @@ The project is organized as follows:
 - `requirements.txt`: List of dependencies
 - `setup.py`: Installation script
 
-## Citation
-```angular2html
-@article{li2024scar,
-  title={SCAR: Efficient Instruction-Tuning for Large Language Models via Style Consistency-Aware Response Ranking},
-  author={Li, Zhuang and Hua, Yuncheng and Vu, Thuy-Trang and Zhan, Haolan and Qu, Lizhen and Haffari, Gholamreza},
-  journal={arXiv preprint arXiv:2406.10882},
-  year={2024}
-}
-```
 
