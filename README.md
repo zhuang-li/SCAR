@@ -4,6 +4,36 @@
 
 SCAR is an innovative data selection method that enhances instruction-tuning for large language models. By leveraging style consistency-aware response ranking, SCAR identifies and selects the most beneficial training data for fine-tuning LLMs, ultimately improving their performance.
 
+## Performance
+
+SCAR demonstrates significant improvements in LLM performance when used for data filtering and selection. We evaluated
+our method using two LLMs: Olmo and Starcoder.
+
+### Olmo Performance
+
+The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLMo-7B-SFT) is trained on 320k data from [allenai/tulu-v2-sft-mixture](https://huggingface.co/datasets/allenai/tulu-v2-sft-mixture). We evaluate the performance of models trained with SCAR-filtered data using 10k, 5k, and 2.5k instruction-answer pairs. The evaluation metric is L.C. WinRate, which compares model outputs with 'gpt-4-1106-preview' using [meta-llama/Meta-Llama-3-70B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-70B-Instruct) as the judger on the [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) benchmark.
+
+| Dataset Size        | L.C. WinRate |
+|---------------------|--------------|
+| Full dataset (320k) | 3.86         |
+| SCAR-filtered 10k   | 5.37         |
+| SCAR-filtered 5k    | 5.64         |
+| SCAR-filtered 2.5k  | 4.08         |
+
+
+### Starcoder Performance
+
+The official checkpoint ['bigcode/octocoder'](https://huggingface.co/bigcode/octocoder) is the ['bigcode/starcoder'](https://huggingface.co/bigcode/starcoder) fine-tuned on 13k data from ['bigcode/guanaco-commits'](https://huggingface.co/datasets/bigcode/guanaco-commits). We evaluated the performance using the [bigcode-evaluation-harness](https://github.com/bigcode-project/bigcode-evaluation-harness). The performance of 'bigcode/octocoder' is obtained from the ['bigcode/bigcode-models-leaderboard'](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/tree/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder). We evaluated models on four datasets in four programming languages (Python, Java, C++, and JavaScript) and reported two execution accuracies (Pass@1 and Pass@10) for each dataset. We evaluated the performance of the model trained with SCAR-filtered data with 10k, 5k, and 2.5k instruction-answer pairs.
+
+| Dataset Size       | HumanEval (Python) | MultiPL-E (Java)     | MultiPL-E (JavaScript) | MultiPL-E (C++)                    |
+|--------------------|--------------------|----------------------|------------------------|------------------------------------|
+|                    | Pass@1 / Pass@10   | Pass@1 / Pass@10     | Pass@1 / Pass@10       | Pass@1 / Pass@10                   |
+| Full dataset (13k) | [35.56/ 51.81](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/blob/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder/metrics_humaneval_octocoder.json)   | [26.03    / 38.44](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/blob/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder/metrics_multiple-java_octocoder.json) | [32.80   / 46.97](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/blob/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder/metrics_multiple-js_octocoder.json)    | [29.32                  / 41.90](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/blob/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder/metrics_multiple-cpp_octocoder.json) |
+| SCAR-filtered 10k  | 36.29 / 53.99      | 28.29      / 39.58   | 33.22     / 49.79      | 30.17       / 46.20                |
+| SCAR-filtered 5k   | 36.95    / 54.07   | 28.96     / 39.02    | 34.53  / 49.90         | 34.53      / 49.90                 |
+| SCAR-filtered 2.5k | 37.57 / 55.65      | 29.29   / 41.06      | 34.09  / 49.47         | 31.19   / 42.83                    |
+
+
 ## Installation
 
 Ensure you have a **Python 3.8+** environment. You can install SCAR using pip:
@@ -106,36 +136,6 @@ for instruction, answer, score in ratio_pairs:
 ## Model List
 
 We will make the pre-trained SCAR models available after the ICLR anonymity period concludes.
-
-## Performance
-
-SCAR demonstrates significant improvements in LLM performance when used for data filtering and selection. We evaluated
-our method using two LLMs: Olmo and Starcoder.
-
-### Olmo Performance
-
-| Dataset Size        | L.C. WinRate |
-|---------------------|--------------|
-| Full dataset (320k) | 3.86         |
-| SCAR-filtered 10k   | 5.37         |
-| SCAR-filtered 5k    | 5.64         |
-| SCAR-filtered 2.5k  | 4.08         |
-
-The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLMo-7B-SFT) is trained on 320k data from [allenai/tulu-v2-sft-mixture](https://huggingface.co/datasets/allenai/tulu-v2-sft-mixture). We evaluate the performance of models trained with SCAR-filtered data using 10k, 5k, and 2.5k instruction-answer pairs. The evaluation metric is L.C. WinRate, which compares model outputs with 'gpt-4-1106-preview' using [meta-llama/Meta-Llama-3-70B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-70B-Instruct) as the judger on the [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) benchmark.
-
-
-### Starcoder Performance
-
-| Dataset Size       | HumanEval (Python) | MultiPL-E (Java)     | MultiPL-E (JavaScript) | MultiPL-E (C++)                    |
-|--------------------|--------------------|----------------------|------------------------|------------------------------------|
-|                    | Pass@1 / Pass@10   | Pass@1 / Pass@10     | Pass@1 / Pass@10       | Pass@1 / Pass@10                   |
-| Full dataset (13k) | [35.56/ 51.81](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/blob/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder/metrics_humaneval_octocoder.json)   | [26.03    / 38.44](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/blob/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder/metrics_multiple-java_octocoder.json) | [32.80   / 46.97](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/blob/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder/metrics_multiple-js_octocoder.json)    | [29.32                  / 41.90](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/blob/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder/metrics_multiple-cpp_octocoder.json) |
-| SCAR-filtered 10k  | 36.29 / 53.99      | 28.29      / 39.58   | 33.22     / 49.79      | 30.17       / 46.20                |
-| SCAR-filtered 5k   | 36.95    / 54.07   | 28.96     / 39.02    | 34.53  / 49.90         | 34.53      / 49.90                 |
-| SCAR-filtered 2.5k | 37.57 / 55.65      | 29.29   / 41.06      | 34.09  / 49.47         | 31.19   / 42.83                    |
-
-The official checkpoint ['bigcode/octocoder'](https://huggingface.co/bigcode/octocoder) is the ['bigcode/starcoder'](https://huggingface.co/bigcode/starcoder) fine-tuned on 13k data from ['bigcode/guanaco-commits'](https://huggingface.co/datasets/bigcode/guanaco-commits). We evaluated the performance using the [bigcode-evaluation-harness](https://github.com/bigcode-project/bigcode-evaluation-harness). The performance of 'bigcode/octocoder' is obtained from the ['bigcode/bigcode-models-leaderboard'](https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/tree/main/community_results/bigcode_octocoder_loubnabnl/metrics_octocoder). We evaluated models on four datasets in four programming languages (Python, Java, C++, and JavaScript) and reported two execution accuracies (Pass@1 and Pass@10) for each dataset. We evaluated the performance of the model trained with SCAR-filtered data with 10k, 5k, and 2.5k instruction-answer pairs.
-
 
 ## Key Components
 
