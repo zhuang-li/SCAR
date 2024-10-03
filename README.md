@@ -11,7 +11,7 @@ our method using two LLMs: Olmo and Starcoder.
 
 ### Olmo Performance
 
-The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLMo-7B-SFT) is trained on 320k data from [allenai/tulu-v2-sft-mixture](https://huggingface.co/datasets/allenai/tulu-v2-sft-mixture). We evaluate the performance of models trained with SCAR-filtered data using 10k, 5k, and 2.5k instruction-answer pairs. The evaluation metric is L.C. WinRate, which compares model outputs with 'gpt-4-1106-preview' using [meta-llama/Meta-Llama-3-70B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-70B-Instruct) as the judger on the [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) benchmark.
+The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLMo-7B-SFT) is trained on 320k data from [allenai/tulu-v2-sft-mixture](https://huggingface.co/datasets/allenai/tulu-v2-sft-mixture). We evaluate the performance of models trained with SCAR-filtered data using 10k, 5k, and 2.5k instruction-answer pairs. The evaluation metric is L.C. WinRate, which compares model outputs with 'gpt-4-1106-preview' using [meta-llama/Meta-Llama-3-70B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-70B-Instruct) as the judger on the [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) benchmark. The evaluator-human agreement test results on AlpacaEval show that Meta-Llama-3-70B-Instruct achieves a higher agreement rate with human evaluations (67.5) than the human-to-human agreement rate (65.7).
 
 | Dataset Size        | L.C. WinRate |
 |---------------------|--------------|
