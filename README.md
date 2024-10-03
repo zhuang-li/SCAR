@@ -136,7 +136,7 @@ our method using two LLMs: Olmo and Starcoder.
 | SCAR-filtered 5k    | 5.64         |
 | SCAR-filtered 2.5k  | 4.08         |
 
-The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLMo-7B-SFT) is trained on 320k data from [allenai/tulu-v2-sft-mixture](https://huggingface.co/datasets/allenai/tulu-v2-sft-mixture). We evaluate the performance of models trained with SCAR-filtered data using 10k, 5k, and 2.5k instruction-answer pairs. The evaluation metric is L.C. WinRate, which compares model outputs with 'gpt-4-1106-preview' using [meta-llama/Meta-Llama-3-70B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-70B-Instruct) as the judger on the [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) benchmark.
+The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLMo-7B-SFT) is trained on 320k data from [allenai/tulu-v2-sft-mixture](https://huggingface.co/datasets/allenai/tulu-v2-sft-mixture). We evaluate the performance of models trained with SCAR-filtered data using 10k, 5k, and 2.5k instruction-answer pairs. The evaluation metric is L.C. WinRate, which compares our model outputs with 'gpt-4-1106-preview' outputs using [meta-llama/Llama-3-70b-chat-hf](https://docs.together.ai/docs/chat-models) from [Together AI](https://www.together.ai/) as the judger on the [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) benchmark.
 
 
 ### Starcoder Performance
