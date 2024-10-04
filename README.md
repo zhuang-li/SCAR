@@ -11,7 +11,7 @@ our method using two LLMs: Olmo and Starcoder.
 
 ### Olmo Performance
 
-The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLMo-7B-SFT) is trained on 320k data from [allenai/tulu-v2-sft-mixture](https://huggingface.co/datasets/allenai/tulu-v2-sft-mixture). We evaluate the performance of models trained with SCAR-filtered data using 10k, 5k, and 2.5k instruction-answer pairs. The evaluation metric is L.C. WinRate, which compares our model outputs with 'gpt-4-1106-preview' outputs using [meta-llama/Llama-3-70b-chat-hf](https://docs.together.ai/docs/chat-models) from [Together AI](https://www.together.ai/) as the judger on the [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) benchmark. ***The agreement test results on AlpacaEval show that Llama-3-70b-chat-hf achieves a higher agreement rate with human evaluations (67.5) than the human-to-human agreement rate (65.7).***
+The official checkpoint [allenai/OLMo-7B-SFT](https://huggingface.co/allenai/OLMo-7B-SFT) is trained on 320k data from [allenai/tulu-v2-sft-mixture](https://huggingface.co/datasets/allenai/tulu-v2-sft-mixture). We evaluate the performance of models trained with SCAR-filtered data using 10k, 5k, and 2.5k instruction-answer pairs. The evaluation metric is L.C. WinRate, which compares our model outputs with 'gpt-4-1106-preview' outputs using [meta-llama/Llama-3-70b-chat-hf](https://docs.together.ai/docs/chat-models) from [Together AI](https://www.together.ai/) as the judger on the [AlpacaEval](https://github.com/tatsu-lab/alpaca_eval) benchmark. ***The agreement test results on AlpacaEval show that Llama-3-70b-chat-hf achieves a higher agreement rate with human evaluations (67.5) than the human-to-human agreement rate (65.7).*** Please see [alpaca_eval_llama3_70b_fn](https://github.com/tatsu-lab/alpaca_eval/tree/main/src/alpaca_eval/evaluators_configs/alpaca_eval_llama3_70b_fn) for the evaluator configuration details.
 
 | Dataset Size        | L.C. WinRate |
 |---------------------|--------------|
@@ -135,7 +135,7 @@ for instruction, answer, score in ratio_pairs:
 ```
 ## Model List
 
-We will make the pre-trained SCAR models available after the ICLR anonymity period concludes.
+We will make our pre-trained SCAR models available after the ICLR anonymity period concludes. In the meantime, feel free to train and test the models yourself using our scripts provided below.
 
 ## Key Components
 
