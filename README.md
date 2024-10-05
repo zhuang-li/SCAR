@@ -125,8 +125,6 @@ The models here are pre-trained on a dataset consisting primarily of open-domain
 SCAR demonstrates significant improvements in LLM performance when used for data filtering and selection. We evaluated
 our method using two LLMs: Olmo and Starcoder.
 
-**Note:** Prior to applying SCAR, we filter out non-English and remove duplicate instruction-response pairs.
-
 ### Olmo Performance
 
 | Dataset Size        | L.C. WinRate |
