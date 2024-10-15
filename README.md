@@ -110,6 +110,9 @@ print("\nRatio results:")
 for instruction, answer, score in ratio_pairs:
     print(f"Score: {score:.2f} | Instruction: {instruction}")
 ```
+
+**Tip:** Our models currently do not support non-English examples or automatically remove duplicates. To ensure better performance, please manually exclude non-English examples and perform de-duplication before applying our method.
+
 ## Model List
 
 We provide the following pre-trained SCAR models:
@@ -124,8 +127,6 @@ The models here are pre-trained on a dataset consisting primarily of open-domain
 
 SCAR demonstrates significant improvements in LLM performance when used for data filtering and selection. We evaluated
 our method using two LLMs: Olmo and Starcoder.
-
-Please note that our models currently do not process non-English examples or automatically filter out duplicates. Therefore, please remove any non-English examples and perform de-duplication before applying our method.
 
 ### Olmo Performance
 
