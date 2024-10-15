@@ -111,7 +111,7 @@ for instruction, answer, score in ratio_pairs:
     print(f"Score: {score:.2f} | Instruction: {instruction}")
 ```
 
-**Tip:** Our models currently do not support non-English examples or automatically remove duplicates. To ensure better performance, please manually exclude non-English examples and perform de-duplication before applying our method.
+**Tip:** Our models currently do not support non-English examples or automatically remove duplicates. To ensure better performance, please exclude non-English examples and perform de-duplication before applying our method.
 
 ## Model List
 
