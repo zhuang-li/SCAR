@@ -133,6 +133,9 @@ print("\nRatio results:")
 for instruction, answer, score in ratio_pairs:
     print(f"Score: {score:.2f} | Instruction: {instruction}")
 ```
+
+**Tip:** Our models currently do not support non-English examples or automatically remove duplicates. To ensure better performance, please exclude non-English examples and perform de-duplication before applying our method.
+
 ## Model List
 
 We will make our pre-trained SCAR models available after the ICLR anonymity period concludes. In the meantime, feel free to train and test the models yourself using our scripts provided below.
