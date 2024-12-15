@@ -138,7 +138,7 @@ for instruction, answer, score in ratio_pairs:
 
 ## Model List
 
-We will make our pre-trained SCAR models available after the ICLR anonymity period concludes. In the meantime, feel free to train and test the models yourself using our scripts provided below.
+We will make our pre-trained SCAR models available after the anonymity period concludes. In the meantime, feel free to train and test the models yourself using our scripts provided below.
 
 ## Key Components
 
