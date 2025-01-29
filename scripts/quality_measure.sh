@@ -1,6 +1,6 @@
 #!/bin/bash
 # measure the quality of the generated responses to the instructions
-python style_ranker/ranker/quality.py \
+python style_ranker/ranker/quality_measure.py \
   --api_key your_openai_api_key \
   --data_dir data/ranker_data/mix_code_open/gpt_35/instruction_response \
   --output_dir data/ranker_data/mix_code_open/gpt_35/quality_measure \
