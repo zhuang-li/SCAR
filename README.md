@@ -1,4 +1,4 @@
-# [ACL 2025 main] SCAR: Efficient Instruction-Tuning for Large Language Models via Style Consistency-Aware Response Ranking
+# [ACL 2025 main] SCAR: Data Selection via Style Consistency-Aware Response Ranking for Efficient Instruction-Tuning of Large Language Models
 
 ## Overview
 
