@@ -198,7 +198,7 @@ The project is organized as follows:
 ## Citation
 ```angular2html
 @article{li2024scar,
-  title={SCAR: Efficient Instruction-Tuning for Large Language Models via Style Consistency-Aware Response Ranking},
+  title={SCAR: Data Selection via Style Consistency-Aware Response Ranking for Efficient Instruction-Tuning of Large Language Models},
   author={Li, Zhuang and Hua, Yuncheng and Vu, Thuy-Trang and Zhan, Haolan and Qu, Lizhen and Haffari, Gholamreza},
   journal={arXiv preprint arXiv:2406.10882},
   year={2024}
