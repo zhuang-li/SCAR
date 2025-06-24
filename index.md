@@ -86,15 +86,15 @@ ratio_pairs = rank_and_filter(model_path, instructions, answers, ratio=0.5, devi
 
 > **Tip:** SCAR models currently do **not** support non-English data or automatic de-duplication. Exclude non-English examples and remove duplicates before filtering.
 
-## Model list
+## Model List
 
-| Model                           | Encoder           | Note                                 |
-| ------------------------------- | ----------------- | ------------------------------------ |
-| `lizhuang144/scar-gte-base`     | gte-base-en-v1.5  | best balance of size and performance |
-| `lizhuang144/scar-gte-large`    | gte-large-en-v1.5 | higher accuracy                      |
-| `lizhuang144/scar-roberta-base` | roberta-base      | strong generalisation                |
+We provide the following pre-trained SCAR models:
 
-All models were trained on open-domain data at `data/ranker_data/mix_code_open/gpt_35`.
+- [`lizhuang144/scar-gte-base`](https://huggingface.co/lizhuang144/scar-gte-base): SCAR model trained using [`Alibaba-NLP/gte-base-en-v1.5`](https://huggingface.co/Alibaba-NLP/gte-base-en-v1.5) as the representation encoder.
+- [`lizhuang144/scar-gte-large`](https://huggingface.co/lizhuang144/scar-gte-large): SCAR model trained using [`Alibaba-NLP/gte-large-en-v1.5`](https://huggingface.co/Alibaba-NLP/gte-large-en-v1.5) as the representation encoder.
+- [`lizhuang144/scar-roberta-base`](https://huggingface.co/lizhuang144/scar-roberta-base): SCAR model trained using [`FacebookAI/roberta-base`](https://huggingface.co/FacebookAI/roberta-base) as the representation encoder.
+
+The models here are pre-trained on a dataset consisting primarily of open-domain data, available at `data/ranker_data/mix_code_open/gpt_35`.
 
 ## Performance
 
