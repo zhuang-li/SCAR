@@ -1,7 +1,12 @@
 ---
 layout: default
-title: SCAR: Data Selection via Style Consistency Aware Response Ranking
-description: SCAR selects high quality instruction–answer pairs by style consistency to enable efficient instruction tuning of large language models.
+title: SCAR – Data Selection for Efficient Instruction Tuning of LLMs   # <title>
+description: >
+  SCAR ranks instruction–answer pairs by style consistency to enable data-efficient
+  fine-tuning of large language models.                                # <meta name="description">
+keywords: [data selection, instruction tuning, large language models,
+           data-efficient fine-tuning, LLM alignment]                 # <meta name="keywords">
+permalink: /                                                           # canonical root
 ---
 
 # [ACL 2025 main] SCAR: Data Selection via Style Consistency Aware Response Ranking for Efficient Instruction Tuning of Large Language Models
