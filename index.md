@@ -112,7 +112,7 @@ The models here are pre-trained on a dataset consisting primarily of open-domain
 | SCAR 5 k   | **5.64** |
 | SCAR 2.5 k | 4.08     |
 
-### Starcoder (Pass\@1 / Pass\@10)
+### Starcoder (Pass@1 / Pass@10)
 
 | Data size  | Python            | Java              | JavaScript        | C++               |
 | ---------- | ----------------- | ----------------- | ----------------- | ----------------- |
