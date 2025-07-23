@@ -6,6 +6,7 @@ SCAR is an innovative data selection method that enhances instruction-tuning for
 
 <p align="center">
     <a href="https://arxiv.org/abs/2406.10882"><img src="https://img.shields.io/badge/arXiv-2406.10882-b31b1b.svg"></a>
+    <a href="https://aclanthology.org/2025.acl-long.625"><img src="https://img.shields.io/badge/2025.acl-long.625-b31b1b.svg"></a>
     <a href="https://pypi.org/project/scar-tool/"><img src="https://img.shields.io/pypi/v/scar-tool?color=g"></a>
     <a href="https://pepy.tech/project/scar-tool"><img src="https://static.pepy.tech/badge/scar-tool"></a>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg"></a>
@@ -197,11 +198,26 @@ The project is organized as follows:
 
 ## Citation
 ```angular2html
-@article{li2024scar,
-  title={SCAR: Data Selection via Style Consistency-Aware Response Ranking for Efficient Instruction-Tuning of Large Language Models},
-  author={Li, Zhuang and Hua, Yuncheng and Vu, Thuy-Trang and Zhan, Haolan and Qu, Lizhen and Haffari, Gholamreza},
-  journal={arXiv preprint arXiv:2406.10882},
-  year={2024}
+@inproceedings{li-etal-2025-scar,
+    title = "{SCAR}: Data Selection via Style Consistency-Aware Response Ranking for Efficient Instruction-Tuning of Large Language Models",
+    author = "Li, Zhuang  and
+      Hua, Yuncheng  and
+      Vu, Thuy-Trang  and
+      Zhan, Haolan  and
+      Qu, Lizhen  and
+      Haffari, Gholamreza",
+    editor = "Che, Wanxiang  and
+      Nabende, Joyce  and
+      Shutova, Ekaterina  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2025",
+    address = "Vienna, Austria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.acl-long.625/",
+    pages = "12756--12790",
+    ISBN = "979-8-89176-251-0"
 }
 ```
 
